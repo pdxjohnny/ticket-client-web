@@ -13,7 +13,7 @@ if ( $_POST )
 	
 	if ( $result = $statement->execute() )
 	{
-		if ( $database->db->exec('CREATE TABLE IF NOT EXISTS `' . $_POST['school'] . '` (id INTEGER PRIMARY KEY, first TEXT, last TEXT, paid TEXT, ticket INTEGER, guest_paid TEXT, guest_ticket INTEGER, guest_name TEXT, guest_school TEXT)') )
+		if ( $database->db->exec('CREATE TABLE IF NOT EXISTS `' . $_POST['school'] . '` (id INTEGER PRIMARY KEY, first TEXT DEFAULT "", last TEXT DEFAULT "", grade INTEGER DEFAULT 0, paid TEXT DEFAULT "N", ticket INTEGER DEFAULT 0, guest_paid TEXT DEFAULT "N", guest_ticket INTEGER DEFAULT 0, guest_name TEXT DEFAULT "", guest_school TEXT DEFAULT "")') )
 		{
 			$response->OK = true;
 		}

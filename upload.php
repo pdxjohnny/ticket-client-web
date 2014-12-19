@@ -2,6 +2,11 @@
 include 'Database.php';
 include 'header.php';
 
+function shutdown()
+{ 
+	posix_kill(posix_getpid(), SIGHUP); 
+}
+
 if ( $_POST && $user = $database->user( $_POST ) )
 {
 	$table = $user['school'];
@@ -25,11 +30,11 @@ if ( $_POST && $user = $database->user( $_POST ) )
 		}
 		else
 		{
-			move_uploaded_file( $_FILES["file"]["tmp_name"], $upload_dir . $_FILES["file"]["name"] ) . "<br>";
+			echo "<script type='text/javascript'>alert('File uploaded');</script>";
+			move_uploaded_file( $_FILES["file"]["tmp_name"], $upload_dir . $_FILES["file"]["name"] );
 			$import = 'python csv_to_sql.py "csv/' .  $_FILES["file"]["name"] . '" "' . $table . '"';
 			shell_exec( $import );
 			unlink( $upload_dir . $_FILES["file"]["name"] );
-			echo "<script type='text/javascript'>alert('File uploaded');</script>";
 		}
 	}
 	else
@@ -49,8 +54,6 @@ if ( $_POST && $user = $database->user( $_POST ) )
 	<br>
 	<input type="submit" value="Upload" name="submit">
 </form>
-
-
 <?php
 if ( $_POST && $user = $database->user( $_POST ) )
 {

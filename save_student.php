@@ -10,12 +10,13 @@ if ( $_POST && $user = $database->user( $_POST ) )
 
 	$table = $user['school'];
 
-	$query = 'INSERT OR REPLACE INTO `' . $table . '` VALUES ( :id, :first, :last, :paid, :ticket, :guest_paid, :guest_ticket, :guest_name, :guest_school )';
+	$query = 'INSERT OR REPLACE INTO `' . $table . '` VALUES ( :id, :first, :last, :grade, :paid, :ticket, :guest_paid, :guest_ticket, :guest_name, :guest_school )';
 
 	$statement = $database->db->prepare( $query );
 	$statement->bindValue( ":id",				$student["id"],				SQLITE3_INTEGER );
 	$statement->bindValue( ":first",			$student["first"],			SQLITE3_TEXT );
 	$statement->bindValue( ":last",				$student["last"],			SQLITE3_TEXT );
+	$statement->bindValue( ":grade",			$student["grade"],			SQLITE3_INTEGER );
 	$statement->bindValue( ":paid",				$student["paid"],			SQLITE3_TEXT );
 	$statement->bindValue( ":ticket",			$student["ticket"],			SQLITE3_INTEGER );
 	$statement->bindValue( ":guest_paid",		$student["guest_paid"],		SQLITE3_TEXT );

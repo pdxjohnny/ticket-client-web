@@ -34,6 +34,10 @@ class Database
 
 	public function user( $user )
 	{
+		if ( !isset($_POST['username']) || !isset($_POST['password']) )
+		{
+			return false;
+		}
 		$result = false;
 		$statement = $this->db->prepare('SELECT * FROM USERS WHERE username=:username AND password=:password');
 		$statement->bindValue( ':username', $user['username'], SQLITE3_TEXT );
