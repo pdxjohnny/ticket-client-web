@@ -57,7 +57,7 @@ class Database
 
 	public function table( $table )
 	{
-		$statement = $this->db->prepare('SELECT * FROM ' . $table);
+		$statement = $this->db->prepare('SELECT * FROM `' . $table . '`');
 		$result = $statement->execute();
 		$headers = false;
 		echo "<h2>" . $table . "</h2>";
