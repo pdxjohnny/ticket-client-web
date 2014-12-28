@@ -32,9 +32,40 @@ class Database
 		}
 	}
 
+        public function check_user( $user )
+        {
+                $username = false;
+                $school = false;
+                if ( isset($user['username']) )
+                {
+                        $statement = $this->db->prepare('SELECT * FROM USERS WHERE username=:username');
+                        $statement->bindValue( ':username', $user['username'], SQLITE3_TEXT );
+                        $result = $statement->execute();
+                        if ( $result = $result->fetchArray(SQLITE3_ASSOC) )
+                        {
+                                $username = count( (array)$result );
+                        }
+                }
+                if ( isset($user['school']) )
+                {
+                        $statement = $this->db->prepare('SELECT * FROM USERS WHERE school=:school');
+                        $statement->bindValue( ':school', $user['school'], SQLITE3_TEXT );
+                        $result = $statement->execute();
+                        if ( $result = $result->fetchArray(SQLITE3_ASSOC) )
+                        {
+                                $school = count( (array)$result );
+                        }
+                }
+                if ( $school || $username )
+                {
+                        return true;
+                }
+                return false;
+        }
+
 	public function user( $user )
 	{
-		if ( !isset($_POST['username']) || !isset($_POST['password']) )
+		if ( !isset($user['username']) || !isset($user['password']) )
 		{
 			return false;
 		}
