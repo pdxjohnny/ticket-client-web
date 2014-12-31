@@ -15,7 +15,7 @@ if ( $_POST )
 	# If the username is not in use, create them and their school's table
 	else if ( !$database->check_user( $_POST ) &&
 		isset( $_POST['username'] ) && strlen( $_POST['username'] ) > 0 &&
-                isset( $_POST['passowrd'] ) && strlen( $_POST['password'] ) > 0 &&
+                isset( $_POST['password'] ) && strlen( $_POST['password'] ) > 0 &&
                 isset( $_POST['school'] ) && strlen( $_POST['school'] ) > 0 )
 	{
 		$statement = $database->db->prepare('INSERT INTO USERS ( username, password, school ) VALUES ( :username, :password, :school )');
