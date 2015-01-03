@@ -14,9 +14,9 @@ if ( $_POST )
 	}
 	# If the username is not in use, create them and their school's table
 	else if ( !$database->check_user( $_POST ) &&
-		isset( $_POST['username'] ) && strlen( $_POST['username'] ) > 0 &&
-                isset( $_POST['password'] ) && strlen( $_POST['password'] ) > 0 &&
-                isset( $_POST['school'] ) && strlen( $_POST['school'] ) > 0 )
+			isset( $_POST['username'] ) && strlen( $_POST['username'] ) > 0 &&
+			isset( $_POST['password'] ) && strlen( $_POST['password'] ) > 0 &&
+			isset( $_POST['school'] ) && strlen( $_POST['school'] ) > 0 )
 	{
 		$statement = $database->db->prepare('INSERT INTO USERS ( username, password, school ) VALUES ( :username, :password, :school )');
 		$statement->bindValue( ':username', $_POST['username'], SQLITE3_TEXT );
@@ -25,7 +25,7 @@ if ( $_POST )
 
 		if ( $result = $statement->execute() )
 		{
-			if ( $database->db->exec('CREATE TABLE IF NOT EXISTS `' . $_POST['school'] . '` (id INTEGER PRIMARY KEY, first TEXT DEFAULT "", last TEXT DEFAULT "", grade INTEGER DEFAULT 0, paid TEXT DEFAULT "N", ticket INTEGER DEFAULT 0, guest_paid TEXT DEFAULT "N", guest_ticket INTEGER DEFAULT 0, guest_name TEXT DEFAULT "", guest_school TEXT DEFAULT "")') )
+			if ( $database->db->exec('CREATE TABLE IF NOT EXISTS `' . $_POST['school'] . '` (id INTEGER PRIMARY KEY, first TEXT DEFAULT "", last TEXT DEFAULT "", grade INTEGER DEFAULT 0, paid TEXT DEFAULT "N", ticket INTEGER DEFAULT 0, guest_paid TEXT DEFAULT "N", guest_ticket INTEGER DEFAULT 0, guest_name TEXT DEFAULT "", guest_school TEXT DEFAULT "", checked_in INTEGER DEFAULT 0)') )
 			{
 				$response->OK = true;
 				$response->message = "Created a new account, data will be synced across signed in devices";
@@ -34,7 +34,7 @@ if ( $_POST )
 	}
 	else
 	{
-		$response->message = "Username or school name already in use";
+		$response->message = "Invalid login credentials";
 	}
 }
 

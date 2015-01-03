@@ -4,7 +4,7 @@ include 'Database.php';
 $response = new stdClass();
 $response->OK = false;
 
-if ( $_POST && $user = $database->user( $_POST ) )
+if ( $_POST && isset( $_POST['id'] ) && $user = $database->user( $_POST ) )
 {
 	$table = $user['school'];
 
