@@ -1,5 +1,4 @@
 <?php
-include 'Database.php';
 include 'header.php';
 
 ?>
@@ -22,6 +21,7 @@ include 'header.php';
 <br>
 
 <?php
+include 'Database.php';
 if ( $_POST && $user = $database->user( $_POST ) )
 {
 	$database->table( $user['school'] );

@@ -34,7 +34,7 @@ if ( $_POST && $user = $database->user( $_POST ) )
 			move_uploaded_file( $_FILES["file"]["tmp_name"], $upload_dir . $_FILES["file"]["name"] );
 			$import = 'python csv_to_sql.py "csv/' .  $_FILES["file"]["name"] . '" "' . $table . '"';
 			shell_exec( $import );
-			unlink( $upload_dir . $_FILES["file"]["name"] );
+			header( 'Location: http://tickets.codingclubpdx.org/' );
 		}
 	}
 	else
