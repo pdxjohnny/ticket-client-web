@@ -5,7 +5,7 @@ class Database
 
 	public function __construct()
 	{
-		$this->db = new SQLite3('tickets.db');
+		$this->db = new SQLite3('.tickets.db');
 		$this->create_users();
 	}
 
@@ -48,7 +48,7 @@ class Database
 			}
 			if ( isset($user['school']) )
 			{
-					$statement = $this->db->prepare('SELECT * FROM USERS WHERE school=:school');
+					$statement = $this->db->prepare('SELECT * FROM SQLITE_MASTER WHERE name=:school');
 					$statement->bindValue( ':school', $user['school'], SQLITE3_TEXT );
 					$result = $statement->execute();
 					if ( $result = $result->fetchArray(SQLITE3_ASSOC) )
@@ -91,18 +91,21 @@ class Database
 		$statement = $this->db->prepare('SELECT * FROM `' . $table . '`');
 		$result = $statement->execute();
 		$headers = false;
-		echo "<h2>" . $table . "</h2>";
-		echo "<table>";
+		echo "<h2 id='school_name' >" . $table . "</h2>";
+		$this->table_options();
+		echo "<table id='table' >";
+		$all = array();
 		while ( $row = $result->fetchArray(SQLITE3_ASSOC) )
 		{
+			array_push($all, $row);
 			if ( !$headers )
 			{
-				echo "<tr>";
+				echo "<thead><tr>";
 				foreach ( $row as $key => $value )
 				{
 					echo "<th>" . $key . "</th>";
 				}
-				echo "</tr>";
+				echo "</tr></thead><tbody>";
 				$headers = true;
 			}
 			echo "<tr>";
@@ -112,18 +115,28 @@ class Database
 			}
 			echo "</tr>";
 		}
-		echo "</table>";
+		echo "</tbody></table>";
+		echo "<script>var table_object = " . json_encode($all) . "</script>";
+	}
+
+	public function table_options()
+	{
+		echo "<button onclick=\"download( $('#school_name').html() + '.csv', $('#table').table2CSV({delivery:'value'}));\" >Download</button>";
+		echo "<button id=\"clear\" >Delete Data</button>";
+		// echo "<select id='column' ><option value='0' > Column</option></select>";
+		// echo "<select id='filter' ><option value='0' > Filter on</option></select>";
+		// echo "<input id='sort' placeholder='Sort on' ></input>";
 	}
 
 	public function last_ticket( $table )
 	{
-		$statement = $this->db->prepare('SELECT max( ticket ) FROM ' . $table );
+		$statement = $this->db->prepare('SELECT max( ticket ) FROM "' . $table . '"' );
 		$result = $statement->execute();
 		if ( $row = $result->fetchArray(SQLITE3_ASSOC) )
 		{
 			$ticket = $row['max( ticket )'];
 		}
-		$statement = $this->db->prepare('SELECT max( guest_ticket ) FROM ' . $table );
+		$statement = $this->db->prepare('SELECT max( guest_ticket ) FROM "' . $table . '"' );
 		$result = $statement->execute();
 		if ( $row = $result->fetchArray(SQLITE3_ASSOC) )
 		{
@@ -131,6 +144,14 @@ class Database
 		}
 		return ($ticket > $guest_ticket ? $ticket : $guest_ticket);
 	}
+
+	public function clear( $table )
+        {
+                $statement = $this->db->prepare('DELETE FROM "' . $table . '"' );
+                $result = $statement->execute();
+                return $result;
+        }
+
 }
 
 $database = new Database;

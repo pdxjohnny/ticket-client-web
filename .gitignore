@@ -1,3 +1,6 @@
 csv/*
 error.log
-tickets.db
+.tickets.db
+*.DS_Store
+jquery
+
