@@ -39,7 +39,7 @@ if ( $_FILES && $user )
 			move_uploaded_file( $_FILES["file"]["tmp_name"], $upload_dir . $_FILES["file"]["name"] );
 			$import = 'python csv_to_sql.py "csv/' .  $_FILES["file"]["name"] . '" "' . $table . '"';
 			shell_exec( $import );
-			header( 'Location: http://tickets.codingclubpdx.org/' );
+			header( 'Location: http://tickets.thecodingclub.org/' );
 		}
 	}
 	else
